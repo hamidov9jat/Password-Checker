@@ -18,13 +18,28 @@ def request_api_data(query_char: str):
     return res
 
 
+def get_password_leaks_count(hashes: str, hash_suffix_to_check: str):
+    hashes_info = (line.split(':') for line in hashes.splitlines())
+
+    for suffix, count in hashes_info:
+        if suffix == hash_suffix_to_check:
+            return count
+    return 0
+
+
 def pwned_api_check(password: str):
     """
      Check if the password exists in api response
     :param password:
     :return:
     """
-    sha1password = hashlib.sha1(password.encode('utf-8').upper())
+    sha1password = hashlib.sha1(password.encode('utf-8')).hexdigest().upper()
+    first5_chars, suffix = sha1password[:5], sha1password[5:]
+    # print(first5_chars, suffix)
+    response = request_api_data(first5_chars)
+    print(response)
+    print(type(response.text))
+    print(get_password_leaks_count(response.text, suffix))
     return sha1password
 
 
