@@ -50,5 +50,6 @@ def main(args):
     # Simple message to assert that everything went fine
     return 'done!'
 
+
 if __name__ == '__main__':
     main(sys.argv[1:])
