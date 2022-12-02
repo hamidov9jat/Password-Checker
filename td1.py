@@ -1,6 +1,7 @@
 import hashlib
-import requests
 import sys
+
+import requests
 
 
 def request_api_data(query_char: str):
