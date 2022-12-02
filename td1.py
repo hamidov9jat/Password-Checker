@@ -1,6 +1,6 @@
 import hashlib
-
 import requests
+import sys
 
 
 def request_api_data(query_char: str):
@@ -11,9 +11,8 @@ def request_api_data(query_char: str):
     """
     url = 'https://api.pwnedpasswords.com/range/' + query_char
     res = requests.get(url)
-
     if res.status_code != 200:
-        raise RuntimeError(f'Error fetching the data: {res.status_code}, check the api format!')
+        raise RuntimeError(f'Error fetching the data set: {res.status_code}, check the api format!')
 
     return res
 
@@ -23,25 +22,30 @@ def get_password_leaks_count(hashes: str, hash_suffix_to_check: str):
 
     for suffix, count in hashes_info:
         if suffix == hash_suffix_to_check:
-            return count
+            return int(count)
     return 0
 
 
-def pwned_api_check(password: str):
+def pwned_api_check(password: str) -> int:
     """
      Check if the password exists in api response
     :param password:
-    :return:
+    :return: prevalence count for the given password
     """
     sha1password = hashlib.sha1(password.encode('utf-8')).hexdigest().upper()
     first5_chars, suffix = sha1password[:5], sha1password[5:]
-    # print(first5_chars, suffix)
     response = request_api_data(first5_chars)
-    print(response)
-    print(type(response.text))
-    print(get_password_leaks_count(response.text, suffix))
-    return sha1password
+    return get_password_leaks_count(response.text, suffix)
 
 
-# request_api_data('123')
-pwned_api_check('nika')
+def main(args):
+    for password in args:
+        count = pwned_api_check(password)
+        if count > 0:
+            print(f'{password} was found {count} times... you should probably change your password!')
+        else:
+            print(f'You have strong password!\n{password} was NOT previously exposed in data breaches.')
+
+
+if __name__ == '__main__':
+    main(sys.argv[1:])
