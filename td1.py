@@ -44,7 +44,7 @@ def main(args):
         if count > 0:
             print(f'{password} was found {count} times... you should probably change your password!')
         else:
-            print(f'You have strong password!\n{password} was NOT previously exposed in data breaches.')
+            print(f'You have strong password!{password} was NOT previously exposed in data breaches.')
 
 
 if __name__ == '__main__':
