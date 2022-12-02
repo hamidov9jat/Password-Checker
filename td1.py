@@ -47,6 +47,8 @@ def main(args):
         else:
             print(f'You have strong password!{password} was NOT previously exposed in data breaches.')
 
+    # Simple message to assert that everything went fine
+    return 'done!'
 
 if __name__ == '__main__':
     main(sys.argv[1:])
