@@ -3,7 +3,7 @@ import hashlib
 import requests
 
 
-def request_api_data(query_char):
+def request_api_data(query_char: str):
     """
     Return data from the api when possible
     :param query_char:
@@ -16,16 +16,17 @@ def request_api_data(query_char):
         raise RuntimeError(f'Error fetching the data: {res.status_code}, check the api format!')
 
     return res
-    # print(res.content)
 
 
-def pwned_api_check(password):
+def pwned_api_check(password: str):
     """
      Check if the password exists in api response
     :param password:
     :return:
     """
-    # sha1password = hashlib.sha1(password.encode('utf-8'))
-    print(password.encode('utf-8'))
+    sha1password = hashlib.sha1(password.encode('utf-8').upper())
+    return sha1password
+
 
 # request_api_data('123')
+pwned_api_check('nika')
